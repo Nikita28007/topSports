@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757000717966",
+    "project_id": "ssfdgthuj",
+    "storage_bucket": "ssfdgthuj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757000717966:android:0915eb678492b8c4af6bdf",
+        "android_client_info": {
+          "package_name": "com.games.types7.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmNGYd3i5WI1S8kHG0i9ncf22ALq3GuJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
