@@ -2,6 +2,7 @@ package com.games.types7.app
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import java.lang.NullPointerException
 
 import java.util.Locale
 
@@ -21,31 +23,39 @@ class SplashScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.splash_screen,container,false)
+        val view = inflater.inflate(R.layout.splash_screen, container, false)
         val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 3600
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
-        remoteConfig.fetchAndActivate().addOnCompleteListener() { task ->
-            if (task.isSuccessful) {
-                val url = remoteConfig.getString("url")
-                val urlBundle = Bundle()
-                urlBundle.putString("URL", url)
-                val deviceMan = Build.MANUFACTURER
 
-                if (url.isNotEmpty() && !deviceMan.equals("Google") && !checkIsEmu()) {
-                    findNavController().navigate(
-                        R.id.action_splashScreen_to_fragmentWebView,
-                        urlBundle
-                    )
+        try {
+            remoteConfig.fetchAndActivate().addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    val url = remoteConfig.getString("url")
+                    val urlBundle = Bundle()
+                    urlBundle.putString("URL", url)
+                    val deviceMan = Build.MANUFACTURER
+
+                    if (url.isNotEmpty() && !deviceMan.equals("Google") && !checkIsEmu()) {
+                        findNavController().navigate(
+                            R.id.action_splashScreen_to_fragmentWebView,
+                            urlBundle
+                        )
+                    } else {
+                        findNavController().navigate(R.id.action_splashScreen_to_sportFragment)
+                    }
+
                 } else {
                     findNavController().navigate(R.id.action_splashScreen_to_sportFragment)
                 }
 
-            }
-        }
 
+            }
+        } catch (e: Exception) {
+            findNavController().navigate(R.id.action_splashScreen_to_sportFragment)
+        }
         return view
     }
 
